@@ -40,56 +40,14 @@ bot.on('respawn', () => {
     bot.chat('/game hera');
 });
 
-bot.on('chat', (username, message) => {
-    console.log(`Received chat message from ${username}: ${message}`);
-
-    const match = message.match(chatPattern);
-
-    if (!match || username === bot.username) return;
-
-    const sender = match[1];
-    const content = match[2];
-
-    console.log(`Chat message parsed: Sender: ${sender}, Content: ${content}`);
-
-    if (!content.startsWith(prefix)) {
-        return;
-    }
-
-    const args = content.slice(prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-
-    console.log(`Received chat command from ${sender}: ${command}`);
-
-    if (command === 'di') {
-        console.log(`Echoing message: ${args.join(' ')}`);
-        bot.chat(args.join(' '));
-    }
-    if (command === 'come') {
-        console.log(`Moving towards ${sender}`);
-        const target = bot.players[sender] ? bot.players[sender].entity : null;
-        if (!target) {
-            console.log(`Cannot see ${sender}.`);
-            bot.chat(`I cannot see you, ${sender}. Try entering my chunks or getting closer to me.`);
-            return;
+bot.on('messagestr', async (message) => {
+    msg = await message.split(' ').slice(1).join(' ').trim()
+    if (msg.split(" ")[0] === "YOUR NAME HERE") {
+        if (msg.includes("!cmd") {
+         EXECUTE CODE   
         }
-        const player = target.position;
-        bot.pathfinder.setGoal(new GoalNear(player.x, player.y, player.z, 1));
     }
-    if (command === 'goto') {
-        console.log(`Navigating to coordinates: ${args.join(', ')}`);
-        const x = parseInt(args[0]);
-        const y = parseInt(args[1]);
-        const z = parseInt(args[2]);
-        bot.pathfinder.setGoal(new GoalNear(x, y, z, 1));
-    }
-    if (command === 'xz') {
-        console.log(`Navigating to XZ coordinates: ${args.join(', ')}`);
-        const x = parseInt(args[0]);
-        const z = parseInt(args[1]);
-        bot.pathfinder.setGoal(new GoalNearXZ(x, z, 1));
-    }
-});
+}
 
 bot.on('kicked', (reason, loggedIn) => {
     console.log(`Bot has been kicked. Reason: ${reason}. Logged in: ${loggedIn}`);
